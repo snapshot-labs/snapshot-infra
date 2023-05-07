@@ -1,0 +1,12 @@
+[submodule "modules/snapshot"]
+	path = modules/snapshot
+	url = git@github.com:snapshot-labs/snapshot.git
+[submodule "modules/snapshot-hub"]
+	path = modules/snapshot-hub
+	url = git@github.com:snapshot-labs/snapshot-hub.git
+[submodule "modules/score-api"]
+	path = modules/score-api
+	url = git@github.com:snapshot-labs/score-api.git
+[submodule "modules/snapshot-sequencer"]
+	path = modules/snapshot-sequencer
+	url = git@github.com:snapshot-labs/snapshot-sequencer.git
