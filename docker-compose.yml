@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  # snapshot:
+  #   build: ${SNAPSHOT_REPO_PATH}
+  #   ports:
+  #     - "3002:3002"
+  #   env_file:
+  #     - ${SNAPSHOT_REPO_PATH}/.env
+  #     - ./envs/.env.snapshot.local
+  #   volumes:
+  #     - ${SNAPSHOT_REPO_PATH}:/app
+  #     - /app/node_modules
+  #   depends_on:
+  #     - snapshot-hub
+  #     - snapshot-relayer
+  #     - score-api
+
+  snapshot-hub:
+    build: ${SNAPSHOT_HUB_REPO_PATH}
+    ports:
+      - "3000:3000"
+    env_file:
+      - ${SNAPSHOT_HUB_REPO_PATH}/.env
+      - ./envs/.env.snapshot-hub.local
+    volumes:
+      - ${SNAPSHOT_HUB_REPO_PATH}:/app
+      - /app/node_modules
+    depends_on:
+      mysql:
+        condition: service_healthy
+      snapshot-sequencer:
+        condition: service_started
+
+  snapshot-sequencer:
+    build: ${SNAPSHOT_SEQUENCER_REPO_PATH}
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./envs/.env.snapshot-sequencer.local
+      - ${SNAPSHOT_SEQUENCER_REPO_PATH}/.env
+    volumes:
+      - ${SNAPSHOT_SEQUENCER_REPO_PATH}:/app
+      - /app/node_modules
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  score-api:
+    build: ${SCORE_API_REPO_PATH}
+    ports:
+      - "3003:3003"
+    env_file:
+      - ./envs/.env.score-api.local
+      - ${SCORE_API_REPO_PATH}/.env
+    volumes:
+      - ${SCORE_API_REPO_PATH}:/app
+      - /app/node_modules
+
+  snapshot-relayer:
+    build: ${SNAPSHOT_RELAYER_REPO_PATH}
+    ports:
+      - "3004:3004"
+    env_file:
+      - ./envs/.env.snapshot-relayer.local
+      - ${SNAPSHOT_RELAYER_REPO_PATH}/.env
+    volumes:
+      - ${SNAPSHOT_RELAYER_REPO_PATH}:/app
+      - /app/node_modules
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    entrypoint:
+      sh -c "
+        echo 'CREATE DATABASE IF NOT EXISTS `sn-hub`; CREATE DATABASE IF NOT EXISTS `sn-relayer`; CREATE DATABASE IF NOT EXISTS `sn-sequencer`;' > /docker-entrypoint-initdb.d/init.sql;
+        /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
+    cap_add:
+      - SYS_NICE
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql:/var/lib/mysql
+    healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        timeout: 10s
+        retries: 10
+
+
+volumes:
+  mysql:
+    driver: local
