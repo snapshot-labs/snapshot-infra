@@ -1,20 +1,21 @@
 version: '3.8'
 
 services:
-  # snapshot:
-  #   build: ${SNAPSHOT_REPO_PATH}
-  #   ports:
-  #     - "3002:3002"
-  #   env_file:
-  #     - ${SNAPSHOT_REPO_PATH}/.env
-  #     - ./envs/.env.snapshot.local
-  #   volumes:
-  #     - ${SNAPSHOT_REPO_PATH}:/app
-  #     - /app/node_modules
-  #   depends_on:
-  #     - snapshot-hub
-  #     - snapshot-relayer
-  #     - score-api
+  snapshot:
+    build: ${SNAPSHOT_REPO_PATH}
+    ports:
+      - "3002:3002"
+    env_file:
+      - ${SNAPSHOT_REPO_PATH}/.env
+      - ./envs/.env.snapshot.local
+    volumes:
+      - ${SNAPSHOT_REPO_PATH}:/app
+      - /app/node_modules
+    command: yarn run vite --port=3002 --host
+    depends_on:
+      - snapshot-hub
+      - snapshot-relayer
+      - score-api
 
   snapshot-hub:
     build: ${SNAPSHOT_HUB_REPO_PATH}
@@ -31,6 +32,20 @@ services:
         condition: service_healthy
       snapshot-sequencer:
         condition: service_started
+
+  keycard:
+    build: ${KEYCARD_REPO_PATH}
+    ports:
+      - "3005:3005"
+    env_file:
+      - ${KEYCARD_REPO_PATH}/.env
+      - ./envs/.env.keycard.local
+    volumes:
+      - ${KEYCARD_REPO_PATH}:/app
+      - /app/node_modules
+    depends_on:
+      mysql:
+        condition: service_healthy
 
   snapshot-sequencer:
     build: ${SNAPSHOT_SEQUENCER_REPO_PATH}
@@ -74,10 +89,6 @@ services:
   mysql:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
-    entrypoint:
-      sh -c "
-        echo 'CREATE DATABASE IF NOT EXISTS `sn-hub`; CREATE DATABASE IF NOT EXISTS `sn-relayer`; CREATE DATABASE IF NOT EXISTS `sn-sequencer`;' > /docker-entrypoint-initdb.d/init.sql;
-        /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
     cap_add:
       - SYS_NICE
     ports:
@@ -86,11 +97,11 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - mysql:/var/lib/mysql
+      - ./schemas:/docker-entrypoint-initdb.d
     healthcheck:
         test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
         timeout: 10s
         retries: 10
-
 
 volumes:
   mysql:
