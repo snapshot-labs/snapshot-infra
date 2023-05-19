@@ -85,6 +85,33 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+    
+  envelop:
+    build: ${ENVELOP_REPO_PATH}
+    ports:
+      - "3006:3006"
+    env_file:
+      - ./envs/.env.envelop.local
+      - ${ENVELOP_REPO_PATH}/.env
+    volumes:
+      - ${ENVELOP_REPO_PATH}:/app
+      - /app/node_modules
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  envelop-ui:
+    build: ${ENVELOP_UI_REPO_PATH}
+    ports:
+      - "3007:3007"
+    env_file:
+      - ./envs/.env.envelop-ui.local
+      - ${ENVELOP_UI_REPO_PATH}/.env
+    volumes:
+      - ${ENVELOP_UI_REPO_PATH}:/app
+      - /app/node_modules
+    depends_on:
+      - envelop
 
   mysql:
     image: mysql:8.0
@@ -103,6 +130,16 @@ services:
         timeout: 10s
         retries: 10
 
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data
+
 volumes:
   mysql:
+    driver: local
+  redis:
     driver: local
