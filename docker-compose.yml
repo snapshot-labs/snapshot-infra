@@ -8,6 +8,8 @@ services:
     env_file:
       - ${SNAPSHOT_REPO_PATH}/.env
       - ./envs/.env.snapshot.local
+    environment:
+      - PORT=3002
     volumes:
       - ${SNAPSHOT_REPO_PATH}:/app
       - /app/node_modules
@@ -24,6 +26,8 @@ services:
     env_file:
       - ${SNAPSHOT_HUB_REPO_PATH}/.env
       - ./envs/.env.snapshot-hub.local
+    environment:
+      - PORT=3000
     volumes:
       - ${SNAPSHOT_HUB_REPO_PATH}:/app
       - /app/node_modules
@@ -40,6 +44,8 @@ services:
     env_file:
       - ${KEYCARD_REPO_PATH}/.env
       - ./envs/.env.keycard.local
+    environment:
+      - PORT=3005
     volumes:
       - ${KEYCARD_REPO_PATH}:/app
       - /app/node_modules
@@ -54,6 +60,8 @@ services:
     env_file:
       - ./envs/.env.snapshot-sequencer.local
       - ${SNAPSHOT_SEQUENCER_REPO_PATH}/.env
+    environment:
+      - PORT=3001
     volumes:
       - ${SNAPSHOT_SEQUENCER_REPO_PATH}:/app
       - /app/node_modules
@@ -68,6 +76,8 @@ services:
     env_file:
       - ./envs/.env.score-api.local
       - ${SCORE_API_REPO_PATH}/.env
+    environment:
+      - PORT=3003
     volumes:
       - ${SCORE_API_REPO_PATH}:/app
       - /app/node_modules
@@ -79,6 +89,8 @@ services:
     env_file:
       - ./envs/.env.snapshot-relayer.local
       - ${SNAPSHOT_RELAYER_REPO_PATH}/.env
+    environment:
+      - PORT=3004
     volumes:
       - ${SNAPSHOT_RELAYER_REPO_PATH}:/app
       - /app/node_modules
@@ -93,6 +105,8 @@ services:
     env_file:
       - ./envs/.env.envelop.local
       - ${ENVELOP_REPO_PATH}/.env
+    environment:
+      - PORT=3006
     volumes:
       - ${ENVELOP_REPO_PATH}:/app
       - /app/node_modules
@@ -107,9 +121,12 @@ services:
     env_file:
       - ./envs/.env.envelop-ui.local
       - ${ENVELOP_UI_REPO_PATH}/.env
+    environment:
+      - PORT=3007
     volumes:
       - ${ENVELOP_UI_REPO_PATH}:/app
       - /app/node_modules
+    command: yarn run vite --port=3007 --host
     depends_on:
       - envelop
 
