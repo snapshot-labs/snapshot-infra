@@ -9,7 +9,7 @@ services:
       - ${SNAPSHOT_REPO_PATH}/.env
       - ./envs/.env.snapshot.local
     environment:
-      - PORT=3002
+      PORT: 3002
     volumes:
       - ${SNAPSHOT_REPO_PATH}:/app
       - /app/node_modules
@@ -27,7 +27,8 @@ services:
       - ${SNAPSHOT_HUB_REPO_PATH}/.env
       - ./envs/.env.snapshot-hub.local
     environment:
-      - PORT=3000
+      PORT: 3000
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ${SNAPSHOT_HUB_REPO_PATH}:/app
       - /app/node_modules
@@ -45,7 +46,8 @@ services:
       - ${KEYCARD_REPO_PATH}/.env
       - ./envs/.env.keycard.local
     environment:
-      - PORT=3005
+      PORT: 3005
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ${KEYCARD_REPO_PATH}:/app
       - /app/node_modules
@@ -58,10 +60,11 @@ services:
     ports:
       - "3001:3001"
     env_file:
-      - ./envs/.env.snapshot-sequencer.local
       - ${SNAPSHOT_SEQUENCER_REPO_PATH}/.env
+      - ./envs/.env.snapshot-sequencer.local
     environment:
-      - PORT=3001
+      PORT: 3001
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ${SNAPSHOT_SEQUENCER_REPO_PATH}:/app
       - /app/node_modules
@@ -74,10 +77,10 @@ services:
     ports:
       - "3003:3003"
     env_file:
-      - ./envs/.env.score-api.local
       - ${SCORE_API_REPO_PATH}/.env
+      - ./envs/.env.score-api.local
     environment:
-      - PORT=3003
+      PORT: 3003
     volumes:
       - ${SCORE_API_REPO_PATH}:/app
       - /app/node_modules
@@ -87,10 +90,11 @@ services:
     ports:
       - "3004:3004"
     env_file:
-      - ./envs/.env.snapshot-relayer.local
       - ${SNAPSHOT_RELAYER_REPO_PATH}/.env
+      - ./envs/.env.snapshot-relayer.local
     environment:
-      - PORT=3004
+      PORT: 3004
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ${SNAPSHOT_RELAYER_REPO_PATH}:/app
       - /app/node_modules
@@ -103,10 +107,11 @@ services:
     ports:
       - "3006:3006"
     env_file:
-      - ./envs/.env.envelop.local
       - ${ENVELOP_REPO_PATH}/.env
+      - ./envs/.env.envelop.local
     environment:
-      - PORT=3006
+      PORT: 3006
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ${ENVELOP_REPO_PATH}:/app
       - /app/node_modules
@@ -119,8 +124,8 @@ services:
     ports:
       - "3007:3007"
     env_file:
-      - ./envs/.env.envelop-ui.local
       - ${ENVELOP_UI_REPO_PATH}/.env
+      - ./envs/.env.envelop-ui.local
     environment:
       - PORT=3007
     volumes:
