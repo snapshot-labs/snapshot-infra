@@ -17,3 +17,5 @@ To run the infra, simply run:
 ```sh
 docker-compose up
 ```
+## Notes:
+For working with this package now (without waiting for all services add needed files), you can check branch `feat/indep-way`.
