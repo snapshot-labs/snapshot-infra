@@ -84,6 +84,8 @@ services:
     volumes:
       - ${SCORE_API_REPO_PATH}:/app
       - /app/node_modules
+    depends_on:
+      - redis
 
   snapshot-relayer:
     build: ${SNAPSHOT_RELAYER_REPO_PATH}
