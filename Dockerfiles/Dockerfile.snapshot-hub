@@ -1,32 +1,14 @@
-# Node version matching the version declared in the package.json 
-FROM node:16-slim
+FROM node:16-alpine
 
-# Update O.S.
-RUN apt-get update && apt-get upgrade -y 
+WORKDIR /app
 
-# Install required O.S. packages
-RUN apt-get install -y git python make g++
+COPY package.json ./
+COPY yarn.lock ./
 
-# Create the application workdir
-RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
-RUN mkdir -p /home/node/app/uploads && chown -R node:node /home/node/app/uploads
-WORKDIR /home/node/app
+RUN yarn install --frozen-lockfile
 
-# Set current user
-USER node
+COPY . .
 
-# Copy app dependencies
-COPY package*.json ./
-COPY renovate*.json ./
+EXPOSE 3004
 
-# Install app dependencies
-RUN yarn
-
-# Bundle app source
-COPY --chown=node:node . .
-
-# Set the container port 
-EXPOSE 8080
-
-# Start the aplication
-CMD ["yarn", "run", "start" ]
+CMD ["yarn", "run", "dev" ]
