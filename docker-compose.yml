@@ -149,7 +149,6 @@ services:
     volumes:
       - ${BROVIDER_REPO_PATH}:/app
       - /app/node_modules
-    command: yarn run vite --port=3008 --host
     depends_on:
       mysql:
         condition: service_healthy
