@@ -9,12 +9,14 @@ database_relayer="snapshot-relayer"
 database_sequencer="snapshot-sequencer"
 database_keycard="keycard"
 database_envelop="envelop"
+database_brovider="brovider"
 
 database_relayer_schema="$SNAPSHOT_RELAYER_REPO_PATH/src/schema.sql"
 database_sequencer_schema="$SNAPSHOT_SEQUENCER_REPO_PATH/src/helpers/schema.sql"
 database_keycard_schema="$KEYCARD_REPO_PATH/src/helpers/schema.sql"
 database_envelop_schema="$ENVELOP_REPO_PATH/src/helpers/schema.sql"
 database_hub_schema="$SNAPSHOT_HUB_REPO_PATH/src/helpers/schema.sql"
+database_brovider_schema="$BROVIDER_REPO_PATH/src/schema.sql"
 
 dist_path="./schemas"
 
@@ -47,3 +49,5 @@ transform_sql_file $database_sequencer $database_hub_schema "false"
 transform_sql_file $database_keycard $database_keycard_schema
 
 transform_sql_file $database_envelop $database_envelop_schema
+
+transform_sql_file $database_brovider $database_brovider_schema

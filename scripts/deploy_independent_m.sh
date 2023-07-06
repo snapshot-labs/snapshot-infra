@@ -14,6 +14,7 @@ snapshot_hub_repo="git@github.com:snapshot-labs/snapshot-hub.git"
 snapshot_relayer_repo="git@github.com:snapshot-labs/snapshot-relayer.git"
 snapshot_sequencer_repo="git@github.com:snapshot-labs/snapshot-sequencer.git"
 snapshot_repo="git@github.com:snapshot-labs/snapshot.git"
+brovider_repo="git@github.com:snapshot-labs/brovider.git"
 
 # function that copies files from current repo to dist folder
 copy_docker_files() {
@@ -64,3 +65,4 @@ clone_repo $snapshot_hub_repo "SNAPSHOT_HUB_REPO_PATH"
 clone_repo $snapshot_relayer_repo "SNAPSHOT_RELAYER_REPO_PATH"
 clone_repo $snapshot_sequencer_repo "SNAPSHOT_SEQUENCER_REPO_PATH"
 clone_repo $snapshot_repo "SNAPSHOT_REPO_PATH"
+clone_repo $brovider_repo "BROVIDER_REPO_PATH"

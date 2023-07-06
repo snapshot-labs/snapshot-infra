@@ -137,6 +137,23 @@ services:
     depends_on:
       - envelop
 
+  brovider:
+    build: ${BROVIDER_REPO_PATH}
+    ports:
+      - "3008:3008"
+    env_file:
+      - ${BROVIDER_REPO_PATH}/.env
+      - ./envs/.env.brovider.local
+    environment:
+      - PORT=3008
+    volumes:
+      - ${BROVIDER_REPO_PATH}:/app
+      - /app/node_modules
+    command: yarn run vite --port=3008 --host
+    depends_on:
+      mysql:
+        condition: service_healthy
+
   mysql:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
