@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   snapshot:
-    build: ${SNAPSHOT_REPO_PATH}
+    build:
+      context: ${SNAPSHOT_REPO_PATH}
+      dockerfile: ${PWD}/Dockerfiles/Dockerfile.snapshot
     ports:
       - "3002:3002"
     env_file:
@@ -20,7 +22,9 @@ services:
       - score-api
 
   snapshot-hub:
-    build: ${SNAPSHOT_HUB_REPO_PATH}
+    build:
+      context: ${SNAPSHOT_HUB_REPO_PATH}
+      dockerfile: ${PWD}/Dockerfiles/Dockerfile.snapshot-hub
     ports:
       - "3000:3000"
     env_file:
@@ -39,7 +43,9 @@ services:
         condition: service_started
 
   keycard:
-    build: ${KEYCARD_REPO_PATH}
+    build:
+      context: ${KEYCARD_REPO_PATH}
+      dockerfile: ${PWD}/Dockerfiles/Dockerfile.keycard
     ports:
       - "3005:3005"
     env_file:
@@ -56,7 +62,9 @@ services:
         condition: service_healthy
 
   snapshot-sequencer:
-    build: ${SNAPSHOT_SEQUENCER_REPO_PATH}
+    build:
+      context: ${SNAPSHOT_SEQUENCER_REPO_PATH}
+      dockerfile: ${PWD}/Dockerfiles/Dockerfile.snapshot-sequencer
     ports:
       - "3001:3001"
     env_file:
@@ -73,7 +81,9 @@ services:
         condition: service_healthy
 
   score-api:
-    build: ${SCORE_API_REPO_PATH}
+    build:
+      context: ${SCORE_API_REPO_PATH}
+      dockerfile: ${PWD}/Dockerfiles/Dockerfile.score-api
     ports:
       - "3003:3003"
     env_file:
@@ -88,7 +98,9 @@ services:
       - redis
 
   snapshot-relayer:
-    build: ${SNAPSHOT_RELAYER_REPO_PATH}
+    build:
+      context: ${SNAPSHOT_RELAYER_REPO_PATH}
+      dockerfile: ${PWD}/Dockerfiles/Dockerfile.snapshot-relayer
     ports:
       - "3004:3004"
     env_file:
@@ -105,7 +117,9 @@ services:
         condition: service_healthy
     
   envelop:
-    build: ${ENVELOP_REPO_PATH}
+    build:
+      context: ${ENVELOP_REPO_PATH}
+      dockerfile: ${PWD}/Dockerfiles/Dockerfile.envelop
     ports:
       - "3006:3006"
     env_file:
@@ -122,7 +136,9 @@ services:
         condition: service_healthy
 
   envelop-ui:
-    build: ${ENVELOP_UI_REPO_PATH}
+    build:
+      context: ${ENVELOP_UI_REPO_PATH}
+      dockerfile: ${PWD}/Dockerfiles/Dockerfile.envelop-ui
     ports:
       - "3007:3007"
     env_file:
@@ -138,7 +154,9 @@ services:
       - envelop
 
   brovider:
-    build: ${BROVIDER_REPO_PATH}
+    build:
+      context: ${BROVIDER_REPO_PATH}
+      dockerfile: ${PWD}/Dockerfiles/Dockerfile.brovider
     ports:
       - "3008:3008"
     env_file:
