@@ -154,7 +154,7 @@ services:
         condition: service_healthy
 
   mysql:
-    image: mysql:8.0
+    build: ./mysql
     command: --default-authentication-plugin=mysql_native_password
     cap_add:
       - SYS_NICE
@@ -164,7 +164,13 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - mysql:/var/lib/mysql
-      - ./schemas:/docker-entrypoint-initdb.d
+      - ${SNAPSHOT_RELAYER_REPO_PATH}/src/schema.sql:/schemas/snapshot-relayer/schema.sql
+      - ${SNAPSHOT_SEQUENCER_REPO_PATH}/src/helpers/schema.sql:/schemas/snapshot-sequencer/schema1.sql
+      - ${SNAPSHOT_HUB_REPO_PATH}/src/helpers/schema.sql:/schemas/snapshot-sequencer/schema2.sql
+      - ${KEYCARD_REPO_PATH}/src/helpers/schema.sql:/schemas/keycard/schema.sql
+      - ${ENVELOP_REPO_PATH}/src/helpers/schema.sql:/schemas/envelop/schema.sql
+      # fixtures
+      - ./mysql/fixtures/keycard.fixtures.sql:/schemas/keycard/fixtures/keycard.fixtures.sql
     healthcheck:
         test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
         timeout: 10s
