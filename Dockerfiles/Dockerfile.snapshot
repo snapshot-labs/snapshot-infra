@@ -10,7 +10,7 @@ COPY . .
 RUN git submodule update --init --recursive
 RUN yarn install --frozen-lockfile
 
-RUN npm run build
+RUN yarn run build
 
 EXPOSE 3002
 
