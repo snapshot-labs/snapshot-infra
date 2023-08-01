@@ -7,6 +7,8 @@ WORKDIR /app
 
 COPY package.json ./
 COPY yarn.lock ./
+COPY ui/package.json ./ui/package.json
+COPY ui/yarn.lock ./ui/yarn.lock
 
 RUN yarn install --frozen-lockfile
 
