@@ -16,19 +16,9 @@ snapshot_sequencer_repo="git@github.com:snapshot-labs/snapshot-sequencer.git"
 snapshot_repo="git@github.com:snapshot-labs/snapshot.git"
 
 # function that copies files from current repo to dist folder
-copy_docker_files() {
+add_envs_files() {
   local dist_path="$1"
   local repo_name="$2"
-
-  if [ ! -f "$dist_path/.dockerignore" ]; then
-    cp service.dockerignore $dist_path/.dockerignore
-    echo ".dockerignore" >> $dist_path/.git/info/exclude
-  fi
-
-  if [ ! -f "$dist_path/Dockerfile" ]; then
-    cp Dockerfiles/Dockerfile.$repo_name $dist_path/Dockerfile
-    echo "Dockerfile" >> $dist_path/.git/info/exclude
-  fi
 
   if [ ! -f "$dist_path/.env" ]; then
     if [ -f "$dist_path/.env.example" ]; then
@@ -49,11 +39,14 @@ clone_repo() {
 
   if [ ! -d "$dist_path" ]; then
     git clone $repo $dist_path
+    cd $dist_path
+    git submodule update --init --recursive
+    cd -
   fi
 
   sed -i "" "s|${env_name}=.*|${env_name}=${dist_path}|g" .env
 
-  copy_docker_files $dist_path $repo_name
+  add_envs_files $dist_path $repo_name
 }
 
 clone_repo $envelop_ui_repo "ENVELOP_UI_REPO_PATH"
