@@ -2,46 +2,56 @@
 Infra repo for easy development for snapshot project
 
 ## Prerequisites
-You need to have docker and docker-compose installed on your machine.
+You need to have docker and docker-compose installed on your machine. Make sure that you have installed them without sudo. If you have installed them with sudo, you need to run:
+```sh
+sudo groupadd docker
+sudo usermod -aG docker $USER
+```
+and then relogin to your system.
 
 ## Getting Started
-To get started, first clone this repo and then properly configure paths in `.env` file to your local snapshot repos. Additionally, you can also configure envs in `envs` folder.
-than run:
+The simplest way to get started is to run:
 ```sh
-./scripts/db_init.sh
+./scripts/deploy.sh # this will clone all snapshot repos
+docker compose up -d # this will run the infra
 ```
-This will fetch schemas from snapshot repos and create configure them for automatic creation of tables. Files will be placed in `schemas` folder.
+After that you can access snapshot at `http://localhost:3002`
 
-## Running
-To run the infra, simply run:
+## Configuration
+
+### Custom paths
+If you already have snapshot repos cloned somewhere, you can configure paths to them in `.env` file. And after that run:
 ```sh
-docker-compose up
+docker compose up -d
+```
+Make sure that all repos have `.env` file in their root folder (even if it's empty).
+
+### Custom envs
+You can configure custom envs in `envs` folder. For example, you can change `DATABASE_URL` or `IPFS_GATEWAY` and it allow you to redirect requests to custom services. You can also add new envs, e.g. `IPFS_GATEWAY_2=http://localhost:8080` and use it in your repos.
+If you have already run container and you want to apply changes in `.env` file, you need to run:
+```sh
+docker compose down
+docker compose up -d
+```
+or
+```sh
+docker compose up -d --force-recreate <service name>
+```
+You can also temporary override envs in container by running:
+```sh
+docker exec -it -e <env name>=<env value> <service name> sh
 ```
 
-## Independent mode
-Until all those PRs will be accepted:
-
-1. [snapshot-hub](https://github.com/snapshot-labs/snapshot-hub/pull/588)
-2. [snapshot](https://github.com/snapshot-labs/snapshot/pull/3915)
-3. [snapshot-sequencer](https://github.com/snapshot-labs/snapshot-sequencer/pull/50)
-4. [keycard](https://github.com/snapshot-labs/keycard/pull/4)
-5. [snapshot-relayer](https://github.com/snapshot-labs/snapshot-relayer/pull/97)
-6. [envelop](https://github.com/snapshot-labs/envelop/pull/48)
-7. [envelop-ui](https://github.com/snapshot-labs/envelop-ui/pull/6)
-8. [score-api](https://github.com/snapshot-labs/score-api/pull/749)
-
-The infra will not work properly with all branches. To run it in independent mode, you need to:
-1. run `./scripts/deploy_independent_m.sh <path/to/folder(optional)>` to deploy infra to all your packages
-2. run `./scripts/db_init.sh` to fetch schemas
-3. update `.env` file and `envs` folder if needed
-4. install git submodules if needed (should be done manually), e.g. `snapshot` repo needs `snapshot-spaces` submodule
-5. run `docker-compose up` to run the infra
-
-When PR will be accepted you need run `./scripts/revoke_independent_m.sh <path/to/your/package>` before pulling changes from upstream.
-
-Independent mode is not recommended, but it's the only way to run infra until all PRs will be accepted. What independent mode does:
-1. closens all your repositories
-2. adds `.dockerignore` and `Dockerfile` to your packages
-3. adds `.dockerignore` and `Dockerfile` to `.git/info/exclude` of your packages
-
-When all PRs will be accepted, you can run `./scripts/revoke_independent_m.sh <path/to/your/package>` for all your packages to remove all changes made by `./scripts/deploy_independent_m.sh` script. And you need to switch to `master` branch of `snapshot-infra` repo.
+### Fixtures and schemas
+You can add fixtures to `mysql/fixtures/<service name>` folder. They will be automatically loaded during database creation. If you want to recreate database with newerly added fixtures, you need to run:
+```sh
+docker compose down mysql
+docker volume rm snapshot-infra_mysql
+docker-compose up -d mysql
+```
+If you want to add a new schema, you need to add the path to the new schema in `docker-compose.yml` file in `mysql` service. And then run:
+```sh
+docker compose down mysql
+docker volume rm snapshot-infra_mysql
+docker-compose up -d mysql
+```
