@@ -8,13 +8,16 @@ for directory in /schemas/*; do
         for filename in $directory/*.sql; do
             mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -h localhost $database_name < $filename
         done
+    fi
+done
 
-        # Apply fixtures
-        if [ -d "$directory/fixtures" ]; then
-            for filename in $directory/fixtures/*.sql; do
-                mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -h localhost $database_name < $filename
-            done
-        fi
+for directory in /fixtures/*; do
+    if [ -d "$directory" ]; then
+        database_name=$(basename -- "$directory")
+        
+        for filename in $directory/*.sql; do
+            mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -h localhost $database_name < $filename
+        done
     fi
 done
 

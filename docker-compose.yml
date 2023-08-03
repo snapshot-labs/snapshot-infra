@@ -164,13 +164,13 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - mysql:/var/lib/mysql
+      - ./mysql/fixtures:/fixtures
+      # schemas
       - ${SNAPSHOT_RELAYER_REPO_PATH}/src/schema.sql:/schemas/snapshot-relayer/schema.sql
       - ${SNAPSHOT_SEQUENCER_REPO_PATH}/src/helpers/schema.sql:/schemas/snapshot-sequencer/schema1.sql
       - ${SNAPSHOT_HUB_REPO_PATH}/src/helpers/schema.sql:/schemas/snapshot-sequencer/schema2.sql
       - ${KEYCARD_REPO_PATH}/src/helpers/schema.sql:/schemas/keycard/schema.sql
       - ${ENVELOP_REPO_PATH}/src/helpers/schema.sql:/schemas/envelop/schema.sql
-      # fixtures
-      - ./mysql/fixtures/keycard.fixtures.sql:/schemas/keycard/fixtures/keycard.fixtures.sql
     healthcheck:
         test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
         timeout: 10s
