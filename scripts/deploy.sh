@@ -14,6 +14,7 @@ snapshot_hub_repo="git@github.com:snapshot-labs/snapshot-hub.git"
 snapshot_relayer_repo="git@github.com:snapshot-labs/snapshot-relayer.git"
 snapshot_sequencer_repo="git@github.com:snapshot-labs/snapshot-sequencer.git"
 snapshot_repo="git@github.com:snapshot-labs/snapshot.git"
+snapshot_sidekick_repo="git@github.com:snapshot-labs/snapshot-sidekick.git"
 
 # function that copies files from current repo to dist folder
 add_envs_files() {
@@ -57,3 +58,4 @@ clone_repo $snapshot_hub_repo "SNAPSHOT_HUB_REPO_PATH"
 clone_repo $snapshot_relayer_repo "SNAPSHOT_RELAYER_REPO_PATH"
 clone_repo $snapshot_sequencer_repo "SNAPSHOT_SEQUENCER_REPO_PATH"
 clone_repo $snapshot_repo "SNAPSHOT_REPO_PATH"
+clone_repo $snapshot_sidekick_repo "SNAPSHOT_SIDEKICK_REPO_PATH"
