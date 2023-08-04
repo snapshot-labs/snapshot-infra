@@ -70,6 +70,7 @@ services:
     env_file:
       - ${SNAPSHOT_SEQUENCER_REPO_PATH}/.env
       - ./envs/.env.snapshot-sequencer
+      - ./envs/.env.snapshot-sequencer.local
     environment:
       PORT: 3001
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -125,6 +126,7 @@ services:
     env_file:
       - ${ENVELOP_REPO_PATH}/.env
       - ./envs/.env.envelop
+      - ./envs/.env.envelop.local
     environment:
       PORT: 3006
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -162,6 +164,7 @@ services:
     env_file:
       - ${SNAPSHOT_SIDEKICK_REPO_PATH}/.env
       - ./envs/.env.snapshot-sidekick
+      - ./envs/.env.snapshot-sidekick.local
     environment:
       - PORT=3008
     volumes:
