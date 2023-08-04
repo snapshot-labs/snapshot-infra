@@ -9,7 +9,7 @@ services:
       - "3002:3002"
     env_file:
       - ${SNAPSHOT_REPO_PATH}/.env
-      - ./envs/.env.snapshot.local
+      - ./envs/.env.snapshot
     environment:
       PORT: 3002
     volumes:
@@ -29,7 +29,7 @@ services:
       - "3000:3000"
     env_file:
       - ${SNAPSHOT_HUB_REPO_PATH}/.env
-      - ./envs/.env.snapshot-hub.local
+      - ./envs/.env.snapshot-hub
     environment:
       PORT: 3000
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -50,7 +50,7 @@ services:
       - "3005:3005"
     env_file:
       - ${KEYCARD_REPO_PATH}/.env
-      - ./envs/.env.keycard.local
+      - ./envs/.env.keycard
     environment:
       PORT: 3005
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -69,7 +69,7 @@ services:
       - "3001:3001"
     env_file:
       - ${SNAPSHOT_SEQUENCER_REPO_PATH}/.env
-      - ./envs/.env.snapshot-sequencer.local
+      - ./envs/.env.snapshot-sequencer
     environment:
       PORT: 3001
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -88,7 +88,7 @@ services:
       - "3003:3003"
     env_file:
       - ${SCORE_API_REPO_PATH}/.env
-      - ./envs/.env.score-api.local
+      - ./envs/.env.score-api
     environment:
       PORT: 3003
     volumes:
@@ -105,7 +105,7 @@ services:
       - "3004:3004"
     env_file:
       - ${SNAPSHOT_RELAYER_REPO_PATH}/.env
-      - ./envs/.env.snapshot-relayer.local
+      - ./envs/.env.snapshot-relayer
     environment:
       PORT: 3004
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -124,7 +124,7 @@ services:
       - "3006:3006"
     env_file:
       - ${ENVELOP_REPO_PATH}/.env
-      - ./envs/.env.envelop.local
+      - ./envs/.env.envelop
     environment:
       PORT: 3006
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -143,7 +143,7 @@ services:
       - "3007:3007"
     env_file:
       - ${ENVELOP_UI_REPO_PATH}/.env
-      - ./envs/.env.envelop-ui.local
+      - ./envs/.env.envelop-ui
     environment:
       - PORT=3007
     volumes:
@@ -161,7 +161,7 @@ services:
       - "3008:3008"
     env_file:
       - ${SNAPSHOT_SIDEKICK_REPO_PATH}/.env
-      - ./envs/.env.snapshot-sidekick.local
+      - ./envs/.env.snapshot-sidekick
     environment:
       - PORT=3008
     volumes:
