@@ -189,6 +189,7 @@ services:
       - ${SNAPSHOT_HUB_REPO_PATH}/src/helpers/schema.sql:/schemas/snapshot-sequencer/schema2.sql
       - ${KEYCARD_REPO_PATH}/src/helpers/schema.sql:/schemas/keycard/schema.sql
       - ${ENVELOP_REPO_PATH}/src/helpers/schema.sql:/schemas/envelop/schema.sql
+      - ${BROVIDER_REPO_PATH}/src/mysql/schema.sql:/schemas/brovider/schema.sql
     healthcheck:
         test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
         timeout: 10s
