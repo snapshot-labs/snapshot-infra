@@ -13,6 +13,9 @@ and then relogin to your system.
 The simplest way to get started is to run:
 ```sh
 ./scripts/deploy.sh # this will clone all snapshot repos
+```
+Ask your teammates about sensitive data, stored in `.env.<service name>.local` files. You need to copy them to `envs` folder. After that you need to run:
+```sh
 docker compose up -d # this will run the infra
 ```
 After that you can access snapshot at `http://localhost:3002`
