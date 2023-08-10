@@ -6,16 +6,16 @@ services:
       context: ${SNAPSHOT_REPO_PATH}
       dockerfile: ${PWD}/Dockerfiles/Dockerfile.snapshot
     ports:
-      - "3002:3002"
+      - 3002:3000
     env_file:
       - ${SNAPSHOT_REPO_PATH}/.env
       - ./envs/.env.snapshot
     environment:
-      PORT: 3002
+      PORT: 3000
     volumes:
       - ${SNAPSHOT_REPO_PATH}:/app
       - /app/node_modules
-    command: yarn run vite --port=3002 --host
+    command: yarn run vite --port=3000 --host
     depends_on:
       - snapshot-hub
       - snapshot-relayer
@@ -26,7 +26,7 @@ services:
       context: ${SNAPSHOT_HUB_REPO_PATH}
       dockerfile: ${PWD}/Dockerfiles/Dockerfile.snapshot-hub
     ports:
-      - "3000:3000"
+      - 3000:3000
     env_file:
       - ${SNAPSHOT_HUB_REPO_PATH}/.env
       - ./envs/.env.snapshot-hub
@@ -47,12 +47,12 @@ services:
       context: ${KEYCARD_REPO_PATH}
       dockerfile: ${PWD}/Dockerfiles/Dockerfile.keycard
     ports:
-      - "3005:3005"
+      - 3005:3000
     env_file:
       - ${KEYCARD_REPO_PATH}/.env
       - ./envs/.env.keycard
     environment:
-      PORT: 3005
+      PORT: 3000
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ${KEYCARD_REPO_PATH}:/app
@@ -66,13 +66,13 @@ services:
       context: ${SNAPSHOT_SEQUENCER_REPO_PATH}
       dockerfile: ${PWD}/Dockerfiles/Dockerfile.snapshot-sequencer
     ports:
-      - "3001:3001"
+      - 3001:3000
     env_file:
       - ${SNAPSHOT_SEQUENCER_REPO_PATH}/.env
       - ./envs/.env.snapshot-sequencer
       - ./envs/.env.snapshot-sequencer.local
     environment:
-      PORT: 3001
+      PORT: 3000
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ${SNAPSHOT_SEQUENCER_REPO_PATH}:/app
@@ -86,12 +86,12 @@ services:
       context: ${SCORE_API_REPO_PATH}
       dockerfile: ${PWD}/Dockerfiles/Dockerfile.score-api
     ports:
-      - "3003:3003"
+      - 3003:3000
     env_file:
       - ${SCORE_API_REPO_PATH}/.env
       - ./envs/.env.score-api
     environment:
-      PORT: 3003
+      PORT: 3000
     volumes:
       - ${SCORE_API_REPO_PATH}:/app
       - /app/node_modules
@@ -103,12 +103,12 @@ services:
       context: ${SNAPSHOT_RELAYER_REPO_PATH}
       dockerfile: ${PWD}/Dockerfiles/Dockerfile.snapshot-relayer
     ports:
-      - "3004:3004"
+      - 3004:3000
     env_file:
       - ${SNAPSHOT_RELAYER_REPO_PATH}/.env
       - ./envs/.env.snapshot-relayer
     environment:
-      PORT: 3004
+      PORT: 3000
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ${SNAPSHOT_RELAYER_REPO_PATH}:/app
@@ -122,13 +122,13 @@ services:
       context: ${ENVELOP_REPO_PATH}
       dockerfile: ${PWD}/Dockerfiles/Dockerfile.envelop
     ports:
-      - "3006:3006"
+      - 3006:3000
     env_file:
       - ${ENVELOP_REPO_PATH}/.env
       - ./envs/.env.envelop
       - ./envs/.env.envelop.local
     environment:
-      PORT: 3006
+      PORT: 3000
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ${ENVELOP_REPO_PATH}:/app
@@ -142,16 +142,16 @@ services:
       context: ${ENVELOP_UI_REPO_PATH}
       dockerfile: ${PWD}/Dockerfiles/Dockerfile.envelop-ui
     ports:
-      - "3007:3007"
+      - 3007:3000
     env_file:
       - ${ENVELOP_UI_REPO_PATH}/.env
       - ./envs/.env.envelop-ui
     environment:
-      - PORT=3007
+      PORT: 3000
     volumes:
       - ${ENVELOP_UI_REPO_PATH}:/app
       - /app/node_modules
-    command: yarn run vite --port=3007 --host
+    command: yarn run vite --port=3000 --host
     depends_on:
       - envelop
 
@@ -160,13 +160,13 @@ services:
       context: ${SNAPSHOT_SIDEKICK_REPO_PATH}
       dockerfile: ${PWD}/Dockerfiles/Dockerfile.snapshot-sidekick
     ports:
-      - "3008:3008"
+      - 3008:3000
     env_file:
       - ${SNAPSHOT_SIDEKICK_REPO_PATH}/.env
       - ./envs/.env.snapshot-sidekick
       - ./envs/.env.snapshot-sidekick.local
     environment:
-      - PORT=3008
+      PORT: 3000
     volumes:
       - ${SNAPSHOT_SIDEKICK_REPO_PATH}:/app
       - /app/node_modules
@@ -176,13 +176,28 @@ services:
       snapshot-hub:
         condition: service_started
 
+  brovider:
+    build:
+      context: ${BROVIDER_REPO_PATH}
+      dockerfile: ${PWD}/Dockerfiles/Dockerfile.brovider
+    ports:
+      - 3009:3000
+    env_file:
+      - ${BROVIDER_REPO_PATH}/.env
+      - ./envs/.env.brovider
+    environment:
+      PORT: 3000
+    volumes:
+      - ${BROVIDER_REPO_PATH}:/app
+      - /app/node_modules
+
   mysql:
     build: ./mysql
     command: --default-authentication-plugin=mysql_native_password
     cap_add:
       - SYS_NICE
     ports:
-      - '3306:3306'
+      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
@@ -203,7 +218,7 @@ services:
     image: redis:alpine
     restart: always
     ports:
-      - "6379:6379"
+      - 6379:6379
     volumes:
       - redis:/data
 
