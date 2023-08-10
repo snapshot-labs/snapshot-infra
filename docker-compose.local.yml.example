@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  keycard:
+    build:
+      context: ${KEYCARD_REPO_PATH}
+      dockerfile: ${PWD}/Dockerfiles/Dockerfile.keycard
+    ports:
+      - 3005:3000
+    env_file:
+      - ${KEYCARD_REPO_PATH}/.env
+      - ./envs/.env.keycard
+    environment:
+      PORT: 3000
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ${KEYCARD_REPO_PATH}:/app
+      - /app/node_modules
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  score-api:
+    build:
+      context: ${SCORE_API_REPO_PATH}
+      dockerfile: ${PWD}/Dockerfiles/Dockerfile.score-api
+    ports:
+      - 3003:3000
+    env_file:
+      - ${SCORE_API_REPO_PATH}/.env
+      - ./envs/.env.score-api
+    environment:
+      PORT: 3000
+    volumes:
+      - ${SCORE_API_REPO_PATH}:/app
+      - /app/node_modules
+    depends_on:
+      - redis
+
+  mysql:
+    build: ./mysql
+    command: --default-authentication-plugin=mysql_native_password
+    cap_add:
+      - SYS_NICE
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./mysql/fixtures:/fixtures
+      # schemas
+      - ${KEYCARD_REPO_PATH}/src/helpers/schema.sql:/schemas/keycard/schema.sql
+    healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        timeout: 10s
+        retries: 10
+
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/data
+
+volumes:
+  mysql:
+    driver: local
+  redis:
+    driver: local

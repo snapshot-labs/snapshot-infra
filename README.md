@@ -23,7 +23,7 @@ After that you can access snapshot at `http://localhost:3002`
 ## Configuration
 
 ### Custom paths
-If you already have snapshot repos cloned somewhere, you can configure paths to them in `.env` file. And after that run:
+If you already have snapshot repos cloned somewhere and you don't want to close all repos again, then you can configure paths to them in `.env` file. And after that run:
 ```sh
 docker compose up -d
 ```
@@ -58,3 +58,15 @@ docker compose down mysql
 docker volume rm snapshot-infra_mysql
 docker-compose up -d mysql
 ```
+
+### Advanced configuration
+
+If you don't need some services at all or you want to configure them completely differently, you can do it in `docker-compose.local.yml` file. Just copy `docker-compose.yml` to `docker-compose.local.yml` and make changes in it. After that you need to run:
+```sh
+docker compose -f docker-compose.local.yml up -d
+```
+You also can define custom `.env` file. For this you need to copy `.env` file to `.env.local` and make changes in it. After that you need to run:
+```sh
+docker compose -f docker-compose.local.yml --env-file .env.local up -d
+```
+You can find examples in `docker-compose.local.yml.example` and `.env.local.example` files.

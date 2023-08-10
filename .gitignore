@@ -1,3 +1,6 @@
 .DS_Store
 
 envs/*.local
+.env.local
+
+docker-compose.*.yml
