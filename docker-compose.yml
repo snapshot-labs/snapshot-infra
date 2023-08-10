@@ -190,6 +190,21 @@ services:
     volumes:
       - ${BROVIDER_REPO_PATH}:/app
       - /app/node_modules
+  
+  pineapple:
+    build:
+      context: ${PINEAPPLE_REPO_PATH}
+      dockerfile: ${PWD}/Dockerfiles/Dockerfile.pineapple
+    ports:
+      - 3010:3000
+    env_file:
+      - ${PINEAPPLE_REPO_PATH}/.env
+      - ./envs/.env.pineapple
+    environment:
+      PORT: 3000
+    volumes:
+      - ${PINEAPPLE_REPO_PATH}:/app
+      - /app/node_modules
 
   mysql:
     build: ./mysql

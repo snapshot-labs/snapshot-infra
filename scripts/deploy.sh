@@ -16,6 +16,7 @@ snapshot_sequencer_repo="git@github.com:snapshot-labs/snapshot-sequencer.git"
 snapshot_repo="git@github.com:snapshot-labs/snapshot.git"
 snapshot_sidekick_repo="git@github.com:snapshot-labs/snapshot-sidekick.git"
 brovider_repo="git@github.com:snapshot-labs/brovider.git"
+pineapple_repo="git@github.com:snapshot-labs/pineapple.git"
 
 # function that copies files from current repo to dist folder
 add_envs_files() {
@@ -61,3 +62,4 @@ clone_repo $snapshot_sequencer_repo "SNAPSHOT_SEQUENCER_REPO_PATH"
 clone_repo $snapshot_repo "SNAPSHOT_REPO_PATH"
 clone_repo $snapshot_sidekick_repo "SNAPSHOT_SIDEKICK_REPO_PATH"
 clone_repo $brovider_repo "BROVIDER_REPO_PATH"
+clone_repo $pineapple_repo "PINEAPPLE_REPO_PATH"
