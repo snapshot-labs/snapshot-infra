@@ -6,16 +6,16 @@ services:
       context: ${SNAPSHOT_REPO_PATH}
       dockerfile: ${PWD}/Dockerfiles/Dockerfile.snapshot
     ports:
-      - 3002:3000
+      - 3002:3002
     env_file:
       - ${SNAPSHOT_REPO_PATH}/.env
       - ./envs/.env.snapshot
     environment:
-      PORT: 3000
+      PORT: 3002
     volumes:
       - ${SNAPSHOT_REPO_PATH}:/app
       - /app/node_modules
-    command: yarn run vite --port=3000 --host
+    command: yarn run vite --port=3002 --host
     depends_on:
       - snapshot-hub
       - snapshot-relayer
@@ -142,16 +142,16 @@ services:
       context: ${ENVELOP_UI_REPO_PATH}
       dockerfile: ${PWD}/Dockerfiles/Dockerfile.envelop-ui
     ports:
-      - 3007:3000
+      - 3007:3007
     env_file:
       - ${ENVELOP_UI_REPO_PATH}/.env
       - ./envs/.env.envelop-ui
     environment:
-      PORT: 3000
+      PORT: 3007
     volumes:
       - ${ENVELOP_UI_REPO_PATH}:/app
       - /app/node_modules
-    command: yarn run vite --port=3000 --host
+    command: yarn run vite --port=3007 --host
     depends_on:
       - envelop
 
@@ -224,6 +224,7 @@ services:
       - ${SNAPSHOT_HUB_REPO_PATH}/src/helpers/schema.sql:/schemas/snapshot-sequencer/schema2.sql
       - ${KEYCARD_REPO_PATH}/src/helpers/schema.sql:/schemas/keycard/schema.sql
       - ${ENVELOP_REPO_PATH}/src/helpers/schema.sql:/schemas/envelop/schema.sql
+      - ${SNAPSHOT_SIDEKICK_REPO_PATH}/src/helpers/schema.sql:/schemas/snapshot-sidekick/schema.sql
     healthcheck:
         test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
         timeout: 10s
