@@ -39,8 +39,6 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      snapshot-sequencer:
-        condition: service_started
 
   keycard:
     build:
@@ -173,8 +171,6 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      snapshot-hub:
-        condition: service_started
 
   brovider:
     build:
