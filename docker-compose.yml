@@ -196,6 +196,7 @@ services:
     env_file:
       - ${PINEAPPLE_REPO_PATH}/.env
       - ./envs/.env.pineapple
+      - ./envs/.env.pineapple.local
     environment:
       PORT: 3000
     volumes:
